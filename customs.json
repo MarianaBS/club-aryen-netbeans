@@ -1,0 +1,34 @@
+{
+    "elements": {},
+    "attributes": {
+        "th:text": {
+            "context": "td"
+        },
+        "th:if": {
+            "context": "div"
+        },
+        "sec:authentication": {
+            "context": "span"
+        },
+        "th:unless": {},
+        "th:action": {
+            "context": "form"
+        },
+        "sec:authorize": {},
+        "none": {
+            "context": "th"
+        },
+        "th:each": {
+            "context": "tbody"
+        },
+        "th:href": {
+            "context": "a"
+        },
+        "th:field": {
+            "context": "input"
+        },
+        "th:value": {
+            "context": "input"
+        }
+    }
+}

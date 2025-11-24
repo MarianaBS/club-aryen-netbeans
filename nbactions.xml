@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+    <action>
+        <actionName>run</actionName>
+        <packagings>
+            <packaging>jar</packaging>
+        </packagings>
+        <goals>
+            <goal>spring-boot:run</goal>
+        </goals>
+        <properties>
+            <exec.vmArgs></exec.vmArgs>
+            <exec.args></exec.args>
+            <exec.appArgs></exec.appArgs>
+            <exec.mainClass></exec.mainClass>
+            <exec.executable></exec.executable>
+        </properties>
+    </action>
+    <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>spring-boot:run</goal>
+                
+            </goals>
+            <properties>
+                <exec.vmArgs>-</exec.vmArgs>
+                <exec.args></exec.args>
+                <exec.appArgs></exec.appArgs>
+                <exec.mainClass>${packageClassName}</exec.mainClass>
+                <exec.executable>java</exec.executable>
+                <jpda.listen>true</jpda.listen>
+            </properties>
+        </action>
+</actions>
