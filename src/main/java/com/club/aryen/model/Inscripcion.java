@@ -2,7 +2,6 @@ package com.club.aryen.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "inscripcion")
@@ -45,9 +44,5 @@ public class Inscripcion {
 
     public void setFecha(LocalDate f) {
         this.fecha = f;
-    }
-
-    public void setHorario(LocalTime horario) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

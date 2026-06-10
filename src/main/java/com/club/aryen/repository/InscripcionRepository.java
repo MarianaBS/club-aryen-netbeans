@@ -10,8 +10,6 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
 
     List<Inscripcion> findBySocio(Socio socio);
     List<Inscripcion> findByActividad(Actividad actividad);
-
-    public Object findBySocioId(Long id);
-
-    public boolean existsBySocioAndActividad(Socio socio, Actividad actividad);
+    List<Inscripcion> findBySocioId(Long id);
+    boolean existsBySocioAndActividad(Socio socio, Actividad actividad);
 }

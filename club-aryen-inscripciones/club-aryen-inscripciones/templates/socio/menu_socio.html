@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>ARYEN · Menú Socio</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/custom.css">
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="container">
+                <a class="navbar-brand" href="/socio/menu">ARYEN</a>
+            </div>
+        </nav>
+        <div class="container py-4">
+            <h4 class="mb-4">Bienvenido, <span sec:authentication="name"></span></h4>
+
+            <div class="d-flex gap-2">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                        Actividades
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/socio/actividades/listar}">Ver actividades</a></li>
+                    </ul>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                        Mis Inscripciones
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" th:href="@{/socio/inscripciones/listar}">Ver mis inscripciones</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <form th:action="@{/logout}" method="post" class="mt-4">
+                <button type="submit" class="btn btn-danger">Cerrar sesión</button>
+            </form>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

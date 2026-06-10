@@ -13,73 +13,64 @@ public class Actividad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank
     @Column(unique = true)
     private String nombre;
+
     private boolean activo = true;
+
     @ManyToMany(mappedBy = "actividades")
     private Set<Socio> socios = new HashSet<>();
+
     private String dia;
+
     @Column(name = "horario")
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime horario;
+
+    // Nuevo campo: horario de fin
+    @Column(name = "horario_fin")
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime horarioFin;
+
     private String profesor;
-    
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // ── Getters y setters ──────────────────────────────────
 
-    public String getNombre() {
-        return nombre;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public Set<Socio> getSocios() {
-        return socios;
-    }
+    public Set<Socio> getSocios() { return socios; }
+    public void setSocios(Set<Socio> s) { this.socios = s; }
 
-    public void setSocios(Set<Socio> s) {
-        this.socios = s;
-    }
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
 
-    public boolean isActivo() {
-        return activo;
-    }
+    public String getDia() { return dia; }
+    public void setDia(String dia) { this.dia = dia; }
 
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
+    public LocalTime getHorario() { return horario; }
+    public void setHorario(LocalTime horario) { this.horario = horario; }
 
-    public String getDia() {
-        return dia;
-    }
+    public LocalTime getHorarioFin() { return horarioFin; }
+    public void setHorarioFin(LocalTime horarioFin) { this.horarioFin = horarioFin; }
 
-    public void setDia(String dia) {
-        this.dia = dia;
-    }
+    public String getProfesor() { return profesor; }
+    public void setProfesor(String profesor) { this.profesor = profesor; }
 
-    public LocalTime getHorario() {
-        return horario;
-    }
+    // ── Helper: ¿se superpone con otra actividad? ──────────
+    // Dos actividades se superponen si son el mismo día y sus rangos se pisan.
+    // Condición de superposición: inicio1 < fin2  &&  fin1 > inicio2
+    public boolean seSuperponeCon(Actividad otra) {
+        if (!this.dia.equalsIgnoreCase(otra.dia)) return false;
+        if (this.horario == null || this.horarioFin == null
+                || otra.horario == null || otra.horarioFin == null) return false;
 
-    public void setHorario(LocalTime horario) {
-        this.horario = horario;
+        return this.horario.isBefore(otra.horarioFin)
+                && this.horarioFin.isAfter(otra.horario);
     }
-
-    public String getProfesor() {
-        return profesor;
-    }
-
-    public void setProfesor(String profesor) {
-        this.profesor = profesor;
-    }
-    
-   
 }
