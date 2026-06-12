@@ -1,28 +1,23 @@
 package com.club.aryen.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ViewController {
 
-    //@GetMapping("/")
-    //public String home() {
-     //   return "redirect:/menu";
-   // }
-
     @GetMapping("/login")
     public String login() {
-        return "login"; // tu página login.html
+        return "login";
     }
 
-   // @GetMapping("/menu")
-    //public String menu(Model model, Authentication authentication) {
-     //   // authentication.getName() devuelve el username del usuario logueado
-     //   model.addAttribute("username", authentication.getName());
-     //   return "menu";
-    //}
-
+    // Redirige la raíz según el rol del usuario logueado
+    @GetMapping("/")
+    public String home(Authentication auth) {
+        if (auth == null || !auth.isAuthenticated()) return "redirect:/login";
+        boolean esAdmin = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+        return esAdmin ? "redirect:/admin/menu" : "redirect:/socio/menu";
+    }
 }

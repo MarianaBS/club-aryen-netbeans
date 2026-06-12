@@ -3,7 +3,9 @@ package com.club.aryen.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "socio")
@@ -31,11 +33,22 @@ public class Socio {
 
     private boolean activo = true;
 
+    private String telefono;
+
+    private String direccion;
+
     // Relación con Usuario (OneToOne bidireccional)
     @OneToOne
     @JoinColumn(name = "usuario_id", nullable = true)
     private Usuario usuario;
-
+    
+    @ManyToMany
+    @JoinTable(
+    name = "socio_actividad", // Nombre de la tabla intermedia en la BD
+    joinColumns = @JoinColumn(name = "socio_id"),
+    inverseJoinColumns = @JoinColumn(name = "actividad_id")
+    )
+    private Set<Actividad> actividades = new HashSet<>();
     // ── Getters y setters ──────────────────────────────────
 
     public Long getId() { return id; }
@@ -59,6 +72,12 @@ public class Socio {
     public boolean isActivo() { return activo; }
     public void setActivo(boolean activo) { this.activo = activo; }
 
+    public String getTelefono() { return telefono; }
+    public void setTelefono(String telefono) { this.telefono = telefono; }
+
+    public String getDireccion() { return direccion; }
+    public void setDireccion(String direccion) { this.direccion = direccion; }
+
     public Usuario getUsuario() { return usuario; }
     public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
@@ -72,4 +91,12 @@ public class Socio {
 
     @Override
     public int hashCode() { return Objects.hash(id); }
+    
+    public Set<Actividad> getActividades() { 
+    return actividades; 
+}
+
+    public void setActividades(Set<Actividad> actividades) { 
+    this.actividades = actividades; 
+}
 }

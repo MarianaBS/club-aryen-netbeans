@@ -7,11 +7,12 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/custom.css">
+    <script src="/js/darkmode.js"></script>
 </head>
 <body>
 <nav class="navbar">
     <div class="container">
-        <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:36px"></a>
+        <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
     </div>
 </nav>
 <div class="container py-4">
@@ -21,6 +22,12 @@
     </div>
 
     <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+
+    <form th:action="@{/admin/socios/listar}" method="get" class="search-bar">
+        <input type="text" name="q" th:value="${q}" placeholder="Buscar por nombre o apellido...">
+        <button type="submit">Buscar</button>
+        <a th:if="${q != null and !q.isEmpty()}" href="/admin/socios/listar" class="btn btn-secondary btn-sm">✕ Limpiar</a>
+    </form>
 
     <div class="card">
         <table class="table">
@@ -36,7 +43,9 @@
             </thead>
             <tbody>
                 <tr th:if="${#lists.isEmpty(socios)}">
-                    <td colspan="6" data-label="" style="text-align:center;color:var(--gray-500);padding:2rem">No hay socios registrados</td>
+                    <td colspan="6" data-label="" style="text-align:center;color:var(--gray-500);padding:2rem">
+                        No se encontraron socios
+                    </td>
                 </tr>
                 <tr th:each="s : ${socios}">
                     <td data-label="Nombre" style="font-weight:500" th:text="${s.apellido + ', ' + s.nombre}"></td>

@@ -12,11 +12,14 @@ public class InscripcionService {
     private final InscripcionRepository repo;
     private final SocioRepository socioRepo;
     private final ActividadRepository actRepo;
+    private final EmailService emailService;
 
-    public InscripcionService(InscripcionRepository r, SocioRepository s, ActividadRepository a) {
+    public InscripcionService(InscripcionRepository r, SocioRepository s,
+                               ActividadRepository a, EmailService emailService) {
         this.repo = r;
         this.socioRepo = s;
         this.actRepo = a;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -26,16 +29,16 @@ public class InscripcionService {
 
         // 1. Validar que no esté inscripto ya en esta misma actividad
         if (repo.existsBySocioAndActividad(socio, nueva)) {
-            throw new InscripcionException("Ya estás inscripto en " + nueva.getNombre() + ".");
+            throw new InscripcionException("Ya estás inscripto en \"" + nueva.getNombre() + "\".");
         }
 
-        // 2. Validar que ninguna actividad ya inscripta se superponga con la nueva
-        List<Inscripcion> inscripcionesActuales = repo.findBySocio(socio);
-        for (Inscripcion insc : inscripcionesActuales) {
+        // 2. Validar superposición de horarios con otras inscripciones del socio
+        List<Inscripcion> actuales = repo.findBySocio(socio);
+        for (Inscripcion insc : actuales) {
             Actividad existente = insc.getActividad();
             if (nueva.seSuperponeCon(existente)) {
                 throw new InscripcionException(
-                    "La actividad \"" + nueva.getNombre() + "\" (" + nueva.getDia()
+                    "\"" + nueva.getNombre() + "\" (" + nueva.getDia()
                     + " " + nueva.getHorario() + "-" + nueva.getHorarioFin()
                     + ") se superpone con \"" + existente.getNombre() + "\" ("
                     + existente.getDia() + " " + existente.getHorario()
@@ -47,14 +50,26 @@ public class InscripcionService {
         Inscripcion i = new Inscripcion();
         i.setSocio(socio);
         i.setActividad(nueva);
-        return repo.save(i);
+        Inscripcion guardada = repo.save(i);
+
+        // 3. Enviar mail de confirmación (asíncrono, no bloquea)
+        emailService.enviarConfirmacionInscripcion(guardada);
+
+        return guardada;
+    }
+
+    @Transactional
+    public void eliminar(Long inscripcionId) {
+        Inscripcion i = repo.findById(inscripcionId).orElseThrow();
+        // Guardar datos antes de eliminar para el mail
+        repo.delete(i);
+        emailService.enviarConfirmacionBaja(i);
     }
 
     public List<Inscripcion> findAll() {
         return repo.findAll();
     }
 
-    // Excepción propia para que el controller la pueda atrapar limpiamente
     public static class InscripcionException extends RuntimeException {
         public InscripcionException(String msg) { super(msg); }
     }

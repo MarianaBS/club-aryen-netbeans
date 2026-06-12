@@ -1,68 +1,62 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.club.aryen.controller;
 
-/**
- *
- * @author Marian
- */
 import com.club.aryen.model.Socio;
-import com.club.aryen.repository.SocioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.club.aryen.repository.ActividadRepository;
+import com.club.aryen.service.SocioService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import com.club.aryen.model.Actividad;
-import com.club.aryen.repository.ActividadRepository;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-//@RequestMapping("/socio")
 public class SocioController {
 
-    @Autowired
-    private SocioRepository socioRepo;
+    private final SocioService socioService;
     private final ActividadRepository actividadRepo;
 
-    public SocioController(ActividadRepository actividadRepo) {
+    public SocioController(SocioService socioService, ActividadRepository actividadRepo) {
+        this.socioService = socioService;
         this.actividadRepo = actividadRepo;
     }
 
-    // -------- MENU SOCIO --------
     @GetMapping("/socio/menu")
     public String menuSocio() {
-        return "socio/menu_socio"; // tu página de menú para socios
+        return "socio/menu_socio";
     }
 
     @GetMapping("/admin/socios/listar")
-    public String listarSocios(Model model) {
-        model.addAttribute("socios", socioRepo.findAll());
+    public String listarSocios(@RequestParam(required = false) String q, Model model) {
+        model.addAttribute("socios", socioService.buscar(q));
+        model.addAttribute("q", q != null ? q : "");
         return "admin/listasocios";
     }
 
     @GetMapping("/admin/socios/nuevo")
     public String nuevoSocio(Model model) {
         model.addAttribute("socio", new Socio());
-        return "admin/socios"; // tu formulario de alta
+        return "admin/socios";
     }
 
     @PostMapping("/admin/socios/guardar")
-    public String guardarSocio(@ModelAttribute Socio socio) {
-        socioRepo.save(socio);
+    public String guardarSocio(@ModelAttribute Socio socio, RedirectAttributes ra) {
+        boolean esNuevo = (socio.getId() == null);
+        socioService.save(socio);
+        ra.addFlashAttribute("exito", esNuevo
+                ? "Socio creado correctamente."
+                : "Socio actualizado correctamente.");
         return "redirect:/admin/socios/listar";
     }
 
     @GetMapping("/admin/socios/editar/{id}")
     public String editarSocio(@PathVariable Long id, Model model) {
-        model.addAttribute("socio", socioRepo.findById(id).orElse(null));
-        return "admin/socios"; // reutiliza el mismo form para editar
+        model.addAttribute("socio", socioService.findById(id).orElseThrow());
+        return "admin/socios";
     }
 
     @GetMapping("/admin/socios/eliminar/{id}")
-    public String eliminarSocio(@PathVariable Long id) {
-        socioRepo.deleteById(id);
+    public String eliminarSocio(@PathVariable Long id, RedirectAttributes ra) {
+        socioService.softDelete(id);
+        ra.addFlashAttribute("exito", "Socio dado de baja correctamente.");
         return "redirect:/admin/socios/listar";
     }
-
 }

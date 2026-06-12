@@ -2,6 +2,7 @@ package com.club.aryen.controller;
 
 import com.club.aryen.model.Actividad;
 import com.club.aryen.service.ActividadService;
+import com.club.aryen.service.ActividadService.ActividadException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +24,25 @@ public class ActividadController {
     }
 
     @PostMapping("admin/actividades/guardar")
-    public String guardarActividad(@ModelAttribute Actividad actividad, RedirectAttributes ra) {
-        boolean esNueva = (actividad.getId() == null);
-        actividadService.save(actividad);
-        ra.addFlashAttribute("exito", esNueva
-                ? "Actividad creada correctamente."
-                : "Actividad actualizada correctamente.");
-        return "redirect:/admin/actividades/listar";
+    public String guardarActividad(@ModelAttribute Actividad actividad, Model model, RedirectAttributes ra) {
+        try {
+            boolean esNueva = (actividad.getId() == null);
+            actividadService.save(actividad);
+            ra.addFlashAttribute("exito", esNueva
+                    ? "Actividad creada correctamente."
+                    : "Actividad actualizada correctamente.");
+            return "redirect:/admin/actividades/listar";
+        } catch (ActividadException ex) {
+            model.addAttribute("actividad", actividad);
+            model.addAttribute("error", ex.getMessage());
+            return "admin/actividades";
+        }
     }
 
     @GetMapping("admin/actividades/listar")
-    public String listarActividades(Model model) {
-        model.addAttribute("actividades", actividadService.findAll());
+    public String listarActividades(@RequestParam(required = false) String q, Model model) {
+        model.addAttribute("actividades", actividadService.buscar(q));
+        model.addAttribute("q", q != null ? q : "");
         return "admin/listaactividades";
     }
 
@@ -52,8 +60,9 @@ public class ActividadController {
     }
 
     @GetMapping("socio/actividades/listar")
-    public String listarActividadesSocio(Model model) {
-        model.addAttribute("actividades", actividadService.findAll());
+    public String listarActividadesSocio(@RequestParam(required = false) String q, Model model) {
+        model.addAttribute("actividades", actividadService.buscar(q));
+        model.addAttribute("q", q != null ? q : "");
         return "socio/listaactividades";
     }
 }

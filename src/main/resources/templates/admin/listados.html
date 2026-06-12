@@ -1,0 +1,43 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ARYEN · Listados</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/custom.css">
+    <script src="/js/darkmode.js"></script>
+</head>
+<body>
+<nav class="navbar">
+    <div class="container">
+        <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
+        <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
+        <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="btn-logout">Cerrar sesión</button>
+        </form>
+    </div>
+</nav>
+
+<div class="menu-wrapper">
+    <p class="menu-welcome">Listados</p>
+    <p class="menu-subtitle">Elegí el tipo de reporte que querés ver</p>
+
+    <div class="menu-grid" style="max-width:420px; grid-template-columns: repeat(2,1fr)">
+        <a href="/admin/listados/por-socio" class="menu-card">
+            <span class="menu-card-icon">👤</span>
+            <p class="menu-card-title">Por socio</p>
+            <p class="menu-card-sub">Actividades de cada socio</p>
+        </a>
+        <a href="/admin/listados/por-actividad" class="menu-card">
+            <span class="menu-card-icon">🏃</span>
+            <p class="menu-card-title">Por actividad</p>
+            <p class="menu-card-sub">Inscriptos en cada clase</p>
+        </a>
+    </div>
+
+    <a href="/admin/menu" class="btn btn-secondary mt-4">← Volver al menú</a>
+</div>
+</body>
+</html>

@@ -8,8 +8,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> {
 
-    List<Inscripcion> findBySocio(Socio socio);
+    // Ordenadas por apellido del socio
+    List<Inscripcion> findBySocioOrderBySocioApellidoAscSocioNombreAsc(Socio socio);
+
+    // Para el listado general, ordenado por apellido del socio
+    List<Inscripcion> findAllByOrderBySocioApellidoAscSocioNombreAsc();
+
     List<Inscripcion> findByActividad(Actividad actividad);
+    List<Inscripcion> findBySocio(Socio socio);
+    List<Inscripcion> findBySocioOrderByActividadNombreAsc(Socio socio);
     List<Inscripcion> findBySocioId(Long id);
     boolean existsBySocioAndActividad(Socio socio, Actividad actividad);
 }

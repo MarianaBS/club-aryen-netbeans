@@ -1,8 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="260" height="80" viewBox="0 0 260 80" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="100" viewBox="0 0 320 100" role="img">
   <title>Logo Club Aryen</title>
-  <polygon points="40,4 70,22 70,58 40,76 10,58 10,22" fill="#4f46e5"/>
-  <polygon points="40,12 62,25 62,55 40,68 18,55 18,25" fill="#3730a3"/>
-  <text x="40" y="52" text-anchor="middle" font-family="system-ui,sans-serif" font-size="28" font-weight="800" fill="white">A</text>
-  <text x="86" y="44" font-family="system-ui,sans-serif" font-size="22" font-weight="800" fill="#4f46e5">ARYEN</text>
-  <text x="87" y="60" font-family="system-ui,sans-serif" font-size="10" fill="#6b7280" font-weight="500" letter-spacing="2">CLUB DEPORTIVO</text>
+  <!-- Hexágono exterior -->
+  <polygon points="50,5 88,27 88,73 50,95 12,73 12,27" fill="#4f46e5"/>
+  <!-- Hexágono interior -->
+  <polygon points="50,16 78,32 78,68 50,84 22,68 22,32" fill="#3730a3"/>
+  <!-- Letra A -->
+  <text x="50" y="66" text-anchor="middle" font-family="system-ui,sans-serif" font-size="38" font-weight="800" fill="white">A</text>
+  <!-- Nombre -->
+  <text x="106" y="52" font-family="system-ui,sans-serif" font-size="30" font-weight="800" fill="#4f46e5" letter-spacing="1">ARYEN</text>
+  <!-- Subtítulo -->
+  <text x="108" y="72" font-family="system-ui,sans-serif" font-size="12" fill="#6b7280" font-weight="500" letter-spacing="3">CLUB DEPORTIVO</text>
 </svg>

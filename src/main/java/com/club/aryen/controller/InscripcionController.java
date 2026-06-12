@@ -83,7 +83,7 @@ public class InscripcionController {
             model.addAttribute("inscripciones", List.of());
             return "socio/listainscripciones";
         }
-        List<Inscripcion> insc = inscRepo.findBySocio(u.getSocio());
+        List<Inscripcion> insc = inscRepo.findBySocioOrderByActividadNombreAsc(u.getSocio());
         model.addAttribute("inscripciones", insc);
         return "socio/listainscripciones";
     }
@@ -98,7 +98,7 @@ public class InscripcionController {
                 throw new RuntimeException("No autorizado");
             }
         }
-        inscRepo.delete(i);
+        inscripcionService.eliminar(id);
         ra.addFlashAttribute("exito", "Inscripción eliminada correctamente.");
         return isAdmin(auth)
                 ? "redirect:/admin/inscripciones/listar"
@@ -117,7 +117,7 @@ public class InscripcionController {
 
     @GetMapping("/admin/inscripciones/listar")
     public String listarAdmin(Model model) {
-        model.addAttribute("inscripciones", inscRepo.findAll());
+        model.addAttribute("inscripciones", inscRepo.findAllByOrderBySocioApellidoAscSocioNombreAsc());
         return "admin/listainscripciones";
     }
 
