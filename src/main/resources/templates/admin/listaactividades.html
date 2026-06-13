@@ -13,6 +13,7 @@
 <nav class="navbar">
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
+        <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
     </div>
 </nav>
 <div class="container py-4">
@@ -22,6 +23,7 @@
     </div>
 
     <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <form th:action="@{/admin/actividades/listar}" method="get" class="search-bar">
         <input type="text" name="q" th:value="${q}" placeholder="Buscar por nombre...">
@@ -37,31 +39,67 @@
                     <th>Día</th>
                     <th>Horario</th>
                     <th>Profesor/a</th>
+                    <th>Cupo</th>
                     <th>Estado</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:if="${#lists.isEmpty(actividades)}">
-                    <td colspan="6" data-label="" style="text-align:center;color:var(--gray-500);padding:2rem">
+                    <td colspan="7" data-label="" style="text-align:center;color:var(--gray-500);padding:2rem">
                         No se encontraron actividades
+                        <span th:if="${q != null and !q.isEmpty()}">
+                            — <a th:href="@{/admin/actividades/listar}">Limpiar búsqueda</a>
+                        </span>
                     </td>
                 </tr>
-                <tr th:each="a : ${actividades}">
+                <tr th:each="a : ${actividades}" th:with="inscriptos=${inscriptosMap[a.id]}">
                     <td data-label="Nombre" style="font-weight:500" th:text="${a.nombre}"></td>
                     <td data-label="Día" th:text="${a.dia}"></td>
                     <td data-label="Horario"
                         th:text="${#temporals.format(a.horario,'HH:mm') + ' - ' + #temporals.format(a.horarioFin,'HH:mm')}"></td>
                     <td data-label="Profesor/a" th:text="${a.profesor}"></td>
+                    <td data-label="Cupo">
+                        <!-- Sin límite -->
+                        <span th:if="${a.cupoMaximo == 0}" class="cupo-bar cupo-sin-limite">
+                            <span th:text="${inscriptos}"></span> inscriptos
+                        </span>
+                        <!-- Con cupo -->
+                        <span th:unless="${a.cupoMaximo == 0}">
+                            <!-- Completo -->
+                            <span th:if="${inscriptos >= a.cupoMaximo}" class="cupo-bar cupo-completo">
+                                <span class="cupo-progress"><span class="cupo-progress-fill fill-completo" style="width:100%"></span></span>
+                                <span th:text="${inscriptos + '/' + a.cupoMaximo}"></span>
+                            </span>
+                            <!-- Casi lleno (>= 80%) -->
+                            <span th:if="${inscriptos < a.cupoMaximo and inscriptos * 10 >= a.cupoMaximo * 8}" class="cupo-bar cupo-casi-lleno">
+                                <span class="cupo-progress"><span class="cupo-progress-fill fill-casi-lleno" th:style="|width:${inscriptos * 100 / a.cupoMaximo}%|"></span></span>
+                                <span th:text="${inscriptos + '/' + a.cupoMaximo}"></span>
+                            </span>
+                            <!-- Disponible -->
+                            <span th:if="${inscriptos < a.cupoMaximo and inscriptos * 10 < a.cupoMaximo * 8}" class="cupo-bar cupo-disponible">
+                                <span class="cupo-progress"><span class="cupo-progress-fill fill-disponible" th:style="|width:${inscriptos * 100 / a.cupoMaximo}%|"></span></span>
+                                <span th:text="${inscriptos + '/' + a.cupoMaximo}"></span>
+                            </span>
+                        </span>
+                    </td>
                     <td data-label="Estado">
                         <span th:if="${a.activo}" class="badge badge-success">Activa</span>
                         <span th:unless="${a.activo}" class="badge badge-danger">Inactiva</span>
                     </td>
                     <td class="td-actions">
-                        <a th:href="@{/admin/actividades/editar/{id}(id=${a.id})}" class="btn btn-warning btn-sm">Editar</a>
-                        <a th:href="@{/admin/actividades/eliminar/{id}(id=${a.id})}"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('¿Desactivar esta actividad?')">Baja</a>
+                        <!-- Activa: Editar + Baja -->
+                        <th:block th:if="${a.activo}">
+                            <a th:href="@{/admin/actividades/editar/{id}(id=${a.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                            <a th:href="@{/admin/actividades/eliminar/{id}(id=${a.id})}"
+                               class="btn btn-danger btn-sm confirm-action"
+                               data-title="¿Dar de baja la actividad?"
+                               data-msg="La actividad quedará inactiva y no aparecerá para inscripciones.">Baja</a>
+                        </th:block>
+                        <!-- Inactiva: solo Reactivar -->
+                        <a th:unless="${a.activo}"
+                           th:href="@{/admin/actividades/reactivar/{id}(id=${a.id})}"
+                           class="btn btn-outline-success btn-sm">Reactivar</a>
                     </td>
                 </tr>
             </tbody>
@@ -69,5 +107,6 @@
     </div>
     <a href="/admin/menu" class="btn btn-secondary mt-3">← Volver</a>
 </div>
+<script src="/js/confirm-modal.js"></script>
 </body>
 </html>

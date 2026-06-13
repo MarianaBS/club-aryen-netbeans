@@ -19,4 +19,5 @@ public interface InscripcionRepository extends JpaRepository<Inscripcion, Long> 
     List<Inscripcion> findBySocioOrderByActividadNombreAsc(Socio socio);
     List<Inscripcion> findBySocioId(Long id);
     boolean existsBySocioAndActividad(Socio socio, Actividad actividad);
+    long countByActividad(Actividad actividad);
 }

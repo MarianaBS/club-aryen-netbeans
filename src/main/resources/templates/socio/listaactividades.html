@@ -13,6 +13,7 @@
 <nav class="navbar">
     <div class="container">
         <a class="navbar-brand" href="/socio/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
+        <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
     </div>
 </nav>
 <div class="container py-4">
@@ -37,25 +38,48 @@
                     <th>Día</th>
                     <th>Horario</th>
                     <th>Profesor/a</th>
+                    <th>Lugares</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:if="${#lists.isEmpty(actividades)}">
-                    <td colspan="5" data-label="" style="text-align:center;color:var(--gray-500);padding:2rem">
+                    <td colspan="6" data-label="" style="text-align:center;color:var(--gray-500);padding:2rem">
                         No se encontraron actividades
+                        <span th:if="${q != null and !q.isEmpty()}">
+                            — <a th:href="@{/socio/actividades/listar}">Limpiar búsqueda</a>
+                        </span>
                     </td>
                 </tr>
-                <tr th:each="a : ${actividades}">
+                <tr th:each="a : ${actividades}" th:with="inscriptos=${inscriptosMap[a.id]}">
                     <td data-label="Actividad" style="font-weight:500" th:text="${a.nombre}"></td>
                     <td data-label="Día" th:text="${a.dia}"></td>
                     <td data-label="Horario"
                         th:text="${#temporals.format(a.horario,'HH:mm') + ' - ' + #temporals.format(a.horarioFin,'HH:mm')}"></td>
                     <td data-label="Profesor/a" th:text="${a.profesor}"></td>
+                    <td data-label="Lugares">
+                        <span th:if="${a.cupoMaximo == 0}" class="cupo-bar cupo-sin-limite">Libre</span>
+                        <span th:unless="${a.cupoMaximo == 0}">
+                            <span th:if="${inscriptos >= a.cupoMaximo}" class="badge badge-danger">Completa</span>
+                            <span th:if="${inscriptos < a.cupoMaximo and inscriptos * 10 >= a.cupoMaximo * 8}"
+                                  class="cupo-bar cupo-casi-lleno"
+                                  th:text="${(a.cupoMaximo - inscriptos) + ' lugar' + (a.cupoMaximo - inscriptos == 1 ? '' : 'es')}">
+                            </span>
+                            <span th:if="${inscriptos < a.cupoMaximo and inscriptos * 10 < a.cupoMaximo * 8}"
+                                  class="cupo-bar cupo-disponible"
+                                  th:text="${(a.cupoMaximo - inscriptos) + ' lugar' + (a.cupoMaximo - inscriptos == 1 ? '' : 'es')}">
+                            </span>
+                        </span>
+                    </td>
                     <td class="td-actions">
-                        <a th:if="${a.activo}"
+                        <!-- Activa y con lugar -->
+                        <a th:if="${a.activo and (a.cupoMaximo == 0 or inscriptos < a.cupoMaximo)}"
                            th:href="@{/socio/inscripciones/inscribirse/{id}(id=${a.id})}"
                            class="btn btn-primary btn-sm">Inscribirme</a>
+                        <!-- Activa pero completa -->
+                        <span th:if="${a.activo and a.cupoMaximo > 0 and inscriptos >= a.cupoMaximo}"
+                              class="badge badge-danger">Sin lugar</span>
+                        <!-- Inactiva -->
                         <span th:unless="${a.activo}" class="badge badge-gray">Inactiva</span>
                     </td>
                 </tr>

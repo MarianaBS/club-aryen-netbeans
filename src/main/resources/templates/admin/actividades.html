@@ -13,12 +13,15 @@
 <nav class="navbar">
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
+        <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
     </div>
 </nav>
 <div class="container py-4">
     <div class="page-header">
         <h1 class="page-title" th:text="${actividad.id} != null ? 'Editar actividad' : 'Nueva actividad'"></h1>
     </div>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <div class="card form-max">
         <div class="card-body">
@@ -42,21 +45,26 @@
                     </select>
                 </div>
 
-                <!-- Horario de inicio y fin en la misma fila -->
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem" class="mb-3">
                     <div>
                         <label class="form-label">Horario de inicio</label>
-                        <input type="time" th:field="*{horario}" class="form-control" required>
+                        <input type="time" th:field="*{horario}" class="form-control" id="horarioInicio" required>
                     </div>
                     <div>
                         <label class="form-label">Horario de fin</label>
-                        <input type="time" th:field="*{horarioFin}" class="form-control" required>
+                        <input type="time" th:field="*{horarioFin}" class="form-control" id="horarioFin" required>
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Profesor/a</label>
                     <input type="text" th:field="*{profesor}" class="form-control" placeholder="Nombre del profesor/a" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Cupo máximo <span class="text-muted">(0 = sin límite)</span></label>
+                    <input type="number" th:field="*{cupoMaximo}" class="form-control"
+                           min="0" placeholder="0" style="max-width:140px">
                 </div>
 
                 <hr class="divider">
@@ -67,6 +75,24 @@
             </form>
         </div>
     </div>
+    <a href="/admin/actividades/listar" class="btn btn-secondary mt-3">← Volver al listado</a>
 </div>
+<script>
+(function() {
+    var inicio = document.getElementById('horarioInicio');
+    var fin    = document.getElementById('horarioFin');
+    if (!inicio || !fin) return;
+
+    function validar() {
+        if (inicio.value && fin.value && fin.value <= inicio.value) {
+            fin.setCustomValidity('El horario de fin debe ser posterior al de inicio.');
+        } else {
+            fin.setCustomValidity('');
+        }
+    }
+    inicio.addEventListener('change', validar);
+    fin.addEventListener('change', validar);
+})();
+</script>
 </body>
 </html>

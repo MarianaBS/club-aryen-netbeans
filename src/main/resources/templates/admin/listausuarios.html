@@ -13,6 +13,7 @@
 <nav class="navbar">
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
+        <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
     </div>
 </nav>
 <div class="container py-4">
@@ -45,10 +46,9 @@
                     </td>
                     <td data-label="Socio" class="text-muted" th:text="${u.socio != null ? u.socio.apellido + ', ' + u.socio.nombre : '—'}"></td>
                     <td class="td-actions">
-                        <a th:href="@{/admin/usuarios/editar/{id}(id=${u.id})}" class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/admin/usuarios/editar/{id}(id=${u.id})}" class="btn btn-secondary btn-sm">Editar</a>
                         <a th:href="@{/admin/usuarios/eliminar/{id}(id=${u.id})}"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
+                           class="btn btn-danger btn-sm confirm-action" data-title="¿Eliminar usuario?" data-msg="Se eliminará el acceso de este usuario al sistema.">Eliminar</a>
                     </td>
                 </tr>
             </tbody>
@@ -56,5 +56,6 @@
     </div>
     <a href="/admin/menu" class="btn btn-secondary mt-3">← Volver</a>
 </div>
+<script src="/js/confirm-modal.js"></script>
 </body>
 </html>

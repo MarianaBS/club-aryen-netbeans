@@ -1,7 +1,11 @@
 package com.club.aryen.controller;
 
 import com.club.aryen.model.Actividad;
+import com.club.aryen.repository.InscripcionRepository;
 import com.club.aryen.service.ActividadService;
+import com.club.aryen.service.ActividadService.ActividadException;
+import java.util.HashMap;
+import java.util.Map;
 import com.club.aryen.service.ActividadService.ActividadException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +16,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ActividadController {
 
     private final ActividadService actividadService;
+    private final InscripcionRepository inscRepo;
 
-    public ActividadController(ActividadService actividadService) {
+    public ActividadController(ActividadService actividadService, InscripcionRepository inscRepo) {
         this.actividadService = actividadService;
+        this.inscRepo = inscRepo;
     }
 
     @GetMapping("admin/actividades/nuevo")
@@ -41,10 +47,20 @@ public class ActividadController {
 
     @GetMapping("admin/actividades/listar")
     public String listarActividades(@RequestParam(required = false) String q, Model model) {
-        model.addAttribute("actividades", actividadService.buscar(q));
+        java.util.List<Actividad> actividades = actividadService.buscar(q);
+        model.addAttribute("actividades", actividades);
+        model.addAttribute("inscriptosMap", inscriptosMap(actividades));
         model.addAttribute("q", q != null ? q : "");
         return "admin/listaactividades";
     }
+    private Map<Long, Long> inscriptosMap(java.util.List<Actividad> actividades) {
+        Map<Long, Long> map = new HashMap<>();
+        for (Actividad a : actividades) {
+            map.put(a.getId(), inscRepo.countByActividad(a));
+        }
+        return map;
+    }
+
 
     @GetMapping("admin/actividades/editar/{id}")
     public String editarActividad(@PathVariable Long id, Model model) {
@@ -54,14 +70,31 @@ public class ActividadController {
 
     @GetMapping("admin/actividades/eliminar/{id}")
     public String eliminarActividad(@PathVariable Long id, RedirectAttributes ra) {
-        actividadService.softDelete(id);
-        ra.addFlashAttribute("exito", "Actividad dada de baja correctamente.");
+        try {
+            actividadService.softDelete(id);
+            ra.addFlashAttribute("exito", "Actividad dada de baja correctamente.");
+        } catch (ActividadException ex) {
+            ra.addFlashAttribute("error", ex.getMessage());
+        }
+        return "redirect:/admin/actividades/listar";
+    }
+
+    @GetMapping("admin/actividades/reactivar/{id}")
+    public String reactivarActividad(@PathVariable Long id, RedirectAttributes ra) {
+        try {
+            actividadService.reactivar(id);
+            ra.addFlashAttribute("exito", "Actividad reactivada correctamente.");
+        } catch (ActividadException ex) {
+            ra.addFlashAttribute("error", ex.getMessage());
+        }
         return "redirect:/admin/actividades/listar";
     }
 
     @GetMapping("socio/actividades/listar")
     public String listarActividadesSocio(@RequestParam(required = false) String q, Model model) {
-        model.addAttribute("actividades", actividadService.buscar(q));
+        java.util.List<Actividad> actividades = actividadService.buscar(q);
+        model.addAttribute("actividades", actividades);
+        model.addAttribute("inscriptosMap", inscriptosMap(actividades));
         model.addAttribute("q", q != null ? q : "");
         return "socio/listaactividades";
     }

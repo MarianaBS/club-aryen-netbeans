@@ -13,6 +13,7 @@
 <nav class="navbar">
     <div class="container">
         <a class="navbar-brand" href="/socio/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
+        <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
     </div>
 </nav>
 <div class="container py-4">
@@ -42,12 +43,27 @@
                     <span class="text-muted">Día</span>
                     <span th:text="${inscripcion.actividad.dia}"></span>
                 </div>
-                <div style="display:flex; justify-content:space-between; padding:.6rem 0">
+                <div style="display:flex; justify-content:space-between; padding:.6rem 0; border-bottom:1px solid var(--gray-100)">
                     <span class="text-muted">Horario</span>
                     <span th:text="${#temporals.format(inscripcion.actividad.horario,'HH:mm')
                                    + ' - '
                                    + #temporals.format(inscripcion.actividad.horarioFin,'HH:mm')}">
                     </span>
+                </div>
+                <!-- Cupo disponible -->
+                <div th:if="${inscripcion.actividad.cupoMaximo > 0}"
+                     style="display:flex; justify-content:space-between; padding:.6rem 0">
+                    <span class="text-muted">Lugares disponibles</span>
+                    <span th:with="libres=${inscripcion.actividad.cupoMaximo - inscriptos}"
+                          th:classappend="${libres <= 2} ? 'cupo-casi-lleno' : 'cupo-disponible'"
+                          style="font-weight:500"
+                          th:text="${libres + ' de ' + inscripcion.actividad.cupoMaximo}">
+                    </span>
+                </div>
+                <div th:unless="${inscripcion.actividad.cupoMaximo > 0}"
+                     style="display:flex; justify-content:space-between; padding:.6rem 0">
+                    <span class="text-muted">Lugares</span>
+                    <span class="cupo-sin-limite">Sin límite</span>
                 </div>
             </div>
 

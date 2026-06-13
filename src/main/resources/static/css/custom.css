@@ -235,7 +235,12 @@ body {
 .menu-card-icon {
     font-size: 1.75rem;
     color: var(--primary);
+    display: flex;
+    align-items: center;
 }
+.menu-card-icon svg { color: var(--primary); transition: color .15s; }
+.menu-card:hover .menu-card-icon svg { color: var(--primary-dark); }
+body.dark .menu-card-icon svg { color: var(--primary); }
 .menu-card-title {
     font-size: .95rem;
     font-weight: 600;
@@ -444,9 +449,9 @@ body {
     transition: background .15s, color .15s, border-color .15s, transform .1s;
 }
 .btn-logout:hover {
-    background: var(--danger);
+    background: var(--primary);
     color: white;
-    border-color: var(--danger);
+    border-color: var(--primary);
 }
 .btn-logout:active {
     transform: scale(.97);
@@ -580,3 +585,290 @@ body { transition: background .25s, color .25s; }
 .navbar, .card, .menu-card, .login-card, .login-wrapper,
 .form-control, .form-select, .table thead th,
 .accordion-item, .accordion-button { transition: background .25s, border-color .25s, color .25s; }
+
+/* ── ANIMACIONES ─────────────────────────────────────────── */
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes countUp {
+    from { opacity: 0; transform: scale(.8); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.menu-card {
+    animation: fadeInUp .4s ease both;
+}
+.menu-card:nth-child(1) { animation-delay: .05s; }
+.menu-card:nth-child(2) { animation-delay: .10s; }
+.menu-card:nth-child(3) { animation-delay: .15s; }
+.menu-card:nth-child(4) { animation-delay: .20s; }
+.menu-card:nth-child(5) { animation-delay: .25s; }
+
+.menu-welcome  { animation: fadeIn .5s ease both; }
+.menu-subtitle { animation: fadeIn .5s ease .1s both; }
+
+.card    { animation: fadeInUp .35s ease both; }
+.alert   { animation: fadeIn .3s ease both; }
+
+/* Dashboard stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: .75rem;
+    width: 100%;
+    max-width: 660px;
+    margin-bottom: 1.75rem;
+}
+.stat-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+    animation: countUp .4s ease both;
+}
+.stat-card:nth-child(1) { animation-delay: .05s; }
+.stat-card:nth-child(2) { animation-delay: .10s; }
+.stat-card:nth-child(3) { animation-delay: .15s; }
+.stat-card:nth-child(4) { animation-delay: .20s; }
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: .25rem;
+}
+.stat-label {
+    font-size: .75rem;
+    color: var(--gray-500);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+body.dark .stat-card { background: #1e293b; border-color: #334155; }
+
+@media (max-width: 640px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-number { font-size: 1.5rem; }
+}
+
+/* ── MODAL DE CONFIRMACIÓN ───────────────────────────────── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn .2s ease;
+}
+.modal-overlay.active { display: flex; }
+
+.modal-box {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+    animation: fadeInUp .25s ease;
+}
+.modal-box h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 0 0 .5rem;
+}
+.modal-box p {
+    font-size: .9rem;
+    color: var(--gray-500);
+    margin: 0 0 1.25rem;
+}
+.modal-actions {
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+}
+
+body.dark .modal-box { background: #1e293b; border: 1px solid #334155; }
+body.dark .modal-box h3 { color: var(--gray-900); }
+
+/* ── FIX: tablas en modo oscuro ──────────────────────────── */
+body.dark .table tbody tr { background: #1e293b; }
+body.dark .table tbody td { background: transparent; color: var(--gray-700); }
+body.dark .table tbody tr:hover td { background: #0f172a; }
+body.dark .table thead th { background: #0f172a; color: var(--gray-500); }
+
+/* Fix: card en modo oscuro (por si alguna tabla queda dentro de card) */
+body.dark .card { background: #1e293b; }
+
+/* ── FIX: eliminar flash blanco entre páginas ────────────── */
+/*
+   El flash ocurre porque el body arranca blanco antes de que
+   darkmode.js agregue la clase .dark. Se evita poniendo el fondo
+   oscuro directo en <html> cuando hay preferencia guardada.
+   Esto lo maneja darkmode.js con la clase dark-pending en <html>.
+*/
+html.dark-pending,
+html.dark-pending body {
+    background: #0f172a !important;
+}
+
+/* ── CUPOS ───────────────────────────────────────────────── */
+.cupo-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .8rem;
+    font-weight: 500;
+}
+.cupo-completo  { color: var(--danger); }
+.cupo-casi-lleno { color: var(--warning); }
+.cupo-disponible { color: var(--success); }
+.cupo-sin-limite { color: var(--gray-500); }
+
+/* Barra de progreso de cupo */
+.cupo-progress {
+    width: 60px;
+    height: 5px;
+    background: var(--gray-200);
+    border-radius: 99px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+}
+.cupo-progress-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width .3s;
+}
+.fill-completo   { background: var(--danger); }
+.fill-casi-lleno { background: var(--warning); }
+.fill-disponible { background: var(--success); }
+
+body.dark .cupo-progress { background: #334155; }
+
+/* ── ZEBRA STRIPING ──────────────────────────────────────── */
+.table tbody tr:nth-child(even) td { background: var(--gray-50); }
+.table tbody tr:nth-child(even):hover td { background: var(--gray-100); }
+body.dark .table tbody tr:nth-child(even) td { background: #0f172a; }
+body.dark .table tbody tr:nth-child(even):hover td { background: #1e293b; }
+
+/* ── FIX: texto visible en modo oscuro en cards/forms ───── */
+body.dark .card-body p,
+body.dark .card-body span,
+body.dark .card-body div,
+body.dark .card p,
+body.dark .card span,
+body.dark .card div { color: var(--gray-700); }
+
+/* Fix específico para el formulario de confirmación de inscripción */
+body.dark .f-label  { color: var(--gray-500); }
+body.dark .f-val    { color: var(--gray-900); }
+
+/* Fix general: cualquier texto dentro de card en modo oscuro */
+body.dark .card *   { color: var(--gray-700); }
+
+/* Pero los botones mantienen su color */
+body.dark .btn-success,
+body.dark .btn-primary,
+body.dark .btn-danger,
+body.dark .btn-warning { color: white !important; }
+
+body.dark .btn-secondary { color: var(--gray-700) !important; }
+
+/* Labels y títulos */
+body.dark .form-label    { color: var(--gray-700); }
+body.dark .page-title    { color: var(--gray-900); }
+body.dark .text-muted    { color: var(--gray-500) !important; }
+
+/* ── BOTÓN WHATSAPP ──────────────────────────────────────── */
+.wsp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    margin-top: 2rem;
+    padding: .6rem 1.25rem;
+    background: #25d366;
+    color: white !important;
+    border-radius: 99px;
+    font-size: .9rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(37,211,102,.35);
+    transition: transform .15s, box-shadow .15s, filter .15s;
+    animation: fadeIn .5s ease .3s both;
+}
+.wsp-btn:hover {
+    filter: brightness(.92);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37,211,102,.45);
+    color: white !important;
+}
+.wsp-btn:active { transform: scale(.97); }
+
+body.dark .wsp-btn { box-shadow: 0 4px 12px rgba(37,211,102,.2); }
+
+/* ── BTN OUTLINE SUCCESS (Reactivar) ────────────────────── */
+.btn-outline-success {
+    background: white;
+    border: 1.5px solid var(--success);
+    color: var(--success);
+    font-weight: 500;
+}
+.btn-outline-success:hover {
+    background: var(--success);
+    color: white;
+    filter: none;
+}
+body.dark .btn-outline-success {
+    background: transparent;
+    border-color: var(--success);
+    color: var(--success);
+}
+body.dark .btn-outline-success:hover {
+    background: var(--success);
+    color: white;
+}
+
+/* ── FIX: navbar en mobile ───────────────────────────────── */
+@media (max-width: 640px) {
+    .navbar .container {
+        flex-wrap: nowrap;
+        gap: .5rem;
+    }
+    /* Ocultar el label de sección en pantallas muy chicas */
+    .navbar-section {
+        display: none;
+    }
+    /* Navbar ocupa solo lo necesario */
+    .navbar {
+        padding: .5rem 0;
+    }
+    /* Logo más chico en mobile */
+    .navbar-brand img { height: 36px; }
+
+    /* Botón logout consistente en mobile */
+    .btn-logout {
+        padding: .3rem .65rem;
+        font-size: .8rem;
+        white-space: nowrap;
+    }
+    /* Toggle consistente en mobile */
+    .btn-dark-toggle {
+        padding: .3rem .5rem;
+        font-size: .9rem;
+    }
+}

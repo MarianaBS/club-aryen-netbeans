@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 public interface SocioRepository extends JpaRepository<Socio, Long> {
 
     Optional<Socio> findByEmail(String email);
+    Optional<Socio> findByDni(String dni);
 
     // Ordenado alfabéticamente por apellido, luego nombre
     List<Socio> findAll(Sort sort);

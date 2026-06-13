@@ -44,7 +44,10 @@ public class InscripcionController {
         i.setActividad(actividad);
         i.setSocio(u.getSocio());
 
+        // Pasar info de cupo para mostrar en la confirmación
+        long inscriptos = inscRepo.countByActividad(actividad);
         model.addAttribute("inscripcion", i);
+        model.addAttribute("inscriptos", inscriptos);
         return "socio/inscripcionform";
     }
 
@@ -110,8 +113,8 @@ public class InscripcionController {
     @GetMapping("/admin/inscripciones/nuevo")
     public String altaAdmin(Model model) {
         model.addAttribute("inscripcion", new Inscripcion());
-        model.addAttribute("socios", socioRepo.findAll());
-        model.addAttribute("actividades", actividadRepo.findAll());
+        model.addAttribute("socios", socioRepo.findByActivo(true));
+        model.addAttribute("actividades", actividadRepo.findByActivo(true));
         return "admin/inscripciones";
     }
 

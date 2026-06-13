@@ -13,12 +13,15 @@
 <nav class="navbar">
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
+        <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
     </div>
 </nav>
 <div class="container py-4">
     <div class="page-header">
         <h1 class="page-title" th:text="${socio.id} != null ? 'Editar socio' : 'Nuevo socio'"></h1>
     </div>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
     <div class="card form-max">
         <div class="card-body">
@@ -38,8 +41,16 @@
                     <input type="text" th:field="*{dni}" class="form-control" placeholder="12345678" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">Email <span class="text-muted">(opcional)</span></label>
                     <input type="email" th:field="*{email}" class="form-control" placeholder="correo@ejemplo.com">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Teléfono</label>
+                    <input type="text" th:field="*{telefono}" class="form-control" placeholder="Ej: 341 1234567">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Dirección</label>
+                    <input type="text" th:field="*{direccion}" class="form-control" placeholder="Ej: San Martín 123">
                 </div>
 
                 <hr class="divider">
@@ -50,6 +61,7 @@
             </form>
         </div>
     </div>
+    <a href="/admin/socios/listar" class="btn btn-secondary mt-3">← Volver al listado</a>
 </div>
 </body>
 </html>

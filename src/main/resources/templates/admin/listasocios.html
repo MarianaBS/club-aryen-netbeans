@@ -13,6 +13,7 @@
 <nav class="navbar">
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
+        <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
     </div>
 </nav>
 <div class="container py-4">
@@ -35,6 +36,7 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Email</th>
+                    <th>Teléfono</th>
                     <th>DNI</th>
                     <th>Estado</th>
                     <th>Alta</th>
@@ -43,24 +45,33 @@
             </thead>
             <tbody>
                 <tr th:if="${#lists.isEmpty(socios)}">
-                    <td colspan="6" data-label="" style="text-align:center;color:var(--gray-500);padding:2rem">
+                    <td colspan="7" data-label="" style="text-align:center;color:var(--gray-500);padding:2rem">
                         No se encontraron socios
+                        <span th:if="${q != null and !q.isEmpty()}">
+                            — <a th:href="@{/admin/socios/listar}">Limpiar búsqueda</a>
+                        </span>
                     </td>
                 </tr>
                 <tr th:each="s : ${socios}">
                     <td data-label="Nombre" style="font-weight:500" th:text="${s.apellido + ', ' + s.nombre}"></td>
                     <td data-label="Email" th:text="${s.email}"></td>
+                    <td data-label="Teléfono" th:text="${s.telefono}" style="white-space:nowrap"></td>
                     <td data-label="DNI" th:text="${s.dni}"></td>
                     <td data-label="Estado">
                         <span th:if="${s.activo}" class="badge badge-success">Activo</span>
                         <span th:unless="${s.activo}" class="badge badge-danger">Inactivo</span>
                     </td>
                     <td data-label="Alta" class="text-muted" th:text="${#temporals.format(s.fechaAlta,'dd/MM/yyyy')}"></td>
-                    <td class="td-actions">
-                        <a th:href="@{/admin/socios/editar/{id}(id=${s.id})}" class="btn btn-warning btn-sm">Editar</a>
-                        <a th:href="@{/admin/socios/eliminar/{id}(id=${s.id})}"
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('¿Desactivar este socio?')">Baja</a>
+                    <td class="td-actions" style="white-space:nowrap; min-width:110px">
+                        <!-- Activo: Editar + Baja -->
+                        <th:block th:if="${s.activo}">
+                            <a th:href="@{/admin/socios/editar/{id}(id=${s.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                            <a th:href="@{/admin/socios/confirmar-baja/{id}(id=${s.id})}" class="btn btn-danger btn-sm">Baja</a>
+                        </th:block>
+                        <!-- Inactivo: solo Reactivar -->
+                        <a th:unless="${s.activo}"
+                           th:href="@{/admin/socios/reactivar/{id}(id=${s.id})}"
+                           class="btn btn-outline-success btn-sm">Reactivar</a>
                     </td>
                 </tr>
             </tbody>
@@ -68,5 +79,6 @@
     </div>
     <a href="/admin/menu" class="btn btn-secondary mt-3">← Volver</a>
 </div>
+<script src="/js/confirm-modal.js"></script>
 </body>
 </html>

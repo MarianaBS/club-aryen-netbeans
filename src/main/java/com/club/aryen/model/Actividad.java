@@ -3,7 +3,7 @@ package com.club.aryen.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.Objects;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -20,9 +20,6 @@ public class Actividad {
 
     private boolean activo = true;
 
-    @ManyToMany(mappedBy = "actividades")
-    private Set<Socio> socios = new HashSet<>();
-
     private String dia;
 
     @Column(name = "horario")
@@ -36,6 +33,9 @@ public class Actividad {
 
     private String profesor;
 
+    // 0 = sin límite de cupo
+    private int cupoMaximo = 0;
+
     // ── Getters y setters ──────────────────────────────────
 
     public Long getId() { return id; }
@@ -44,8 +44,6 @@ public class Actividad {
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public Set<Socio> getSocios() { return socios; }
-    public void setSocios(Set<Socio> s) { this.socios = s; }
 
     public boolean isActivo() { return activo; }
     public void setActivo(boolean activo) { this.activo = activo; }
@@ -61,6 +59,9 @@ public class Actividad {
 
     public String getProfesor() { return profesor; }
     public void setProfesor(String profesor) { this.profesor = profesor; }
+
+    public int getCupoMaximo() { return cupoMaximo; }
+    public void setCupoMaximo(int cupoMaximo) { this.cupoMaximo = cupoMaximo; }
 
     // ── Helper: ¿se superpone con otra actividad? ──────────
     // Dos actividades se superponen si son el mismo día y sus rangos se pisan.

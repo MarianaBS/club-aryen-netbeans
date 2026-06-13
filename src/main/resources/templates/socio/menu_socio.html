@@ -23,26 +23,71 @@
 </nav>
 
 <div class="menu-wrapper">
-    <p class="menu-welcome">Hola, <span sec:authentication="name"></span> 👋</p>
+    <p class="menu-welcome">
+        Hola, <span th:text="${nombreCompleto}">Socio</span><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="1.8"
+                 stroke-linecap="round" stroke-linejoin="round"
+                 style="color:var(--primary);vertical-align:middle;margin-left:.35rem">
+                <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2"/>
+                <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+                <path d="M10 10.5a2 2 0 0 0-2-2 2 2 0 0 0-2 2v3"/>
+                <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+            </svg>
+    </p>
     <p class="menu-subtitle">¿Qué querés hacer hoy?</p>
 
     <div class="menu-grid" style="max-width:520px; grid-template-columns: repeat(3, 1fr)">
+
         <a href="/socio/actividades/listar" class="menu-card">
-            <span class="menu-card-icon">🏃</span>
+            <span class="menu-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+            </span>
             <p class="menu-card-title">Actividades</p>
             <p class="menu-card-sub">Ver e inscribirte</p>
         </a>
+
         <a href="/socio/inscripciones/listar" class="menu-card">
-            <span class="menu-card-icon">📋</span>
+            <span class="menu-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14,2 14,8 20,8"/>
+                    <line x1="9" y1="13" x2="15" y2="13"/>
+                    <line x1="9" y1="17" x2="15" y2="17"/>
+                    <line x1="9" y1="9" x2="11" y2="9"/>
+                </svg>
+            </span>
             <p class="menu-card-title">Mis inscripciones</p>
             <p class="menu-card-sub">Ver y darte de baja</p>
         </a>
+
         <a href="/socio/mis-datos" class="menu-card">
-            <span class="menu-card-icon">👤</span>
+            <span class="menu-card-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                     fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </span>
             <p class="menu-card-title">Mis datos</p>
             <p class="menu-card-sub">Editar perfil</p>
         </a>
+
     </div>
+
+    <a href="https://wa.me/5493413618591?text=Hola%2C%20necesito%20hacer%20una%20consulta%20sobre%20el%20club."
+       target="_blank"
+       class="wsp-btn"
+       title="Contactar por WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+            <path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.522 5.847L0 24l6.335-1.501A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.006-1.371l-.36-.214-3.732.884.916-3.618-.235-.372A9.818 9.818 0 1112 21.818z"/>
+        </svg>
+        Contactar al club
+    </a>
 </div>
 </body>
 </html>
