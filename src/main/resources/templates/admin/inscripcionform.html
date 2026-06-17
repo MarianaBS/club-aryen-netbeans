@@ -30,7 +30,7 @@
 
     <div class="card form-max">
         <div class="card-body">
-            <p class="text-muted" style="margin-bottom:1.25rem">Revisá los datos antes de confirmar.</p>
+            <p class="text-muted" style="margin-bottom:1.25rem">Revise los datos antes de confirmar.</p>
 
             <div style="display:grid; gap:.75rem; margin-bottom:1.5rem">
                 <div style="display:flex; justify-content:space-between; padding:.6rem 0; border-bottom:1px solid var(--gray-100)">
@@ -76,21 +76,20 @@
             -->
             <div th:if="${error}" class="d-flex gap-2">
                 <a href="/socio/actividades/listar" class="btn btn-primary">Ver otras actividades</a>
-                <a href="/socio/inscripciones/listar" class="btn btn-secondary">← Mis inscripciones</a>
+                <a href="/socio/inscripciones/listar" class="btn btn-secondary">← Mis Inscripciones</a>
             </div>
 
             <form th:unless="${error}" th:action="@{/inscripciones/guardar}" method="post">
                 <input type="hidden" name="socioId"     th:value="${inscripcion.socio.id}"/>
                 <input type="hidden" name="actividadId" th:value="${inscripcion.actividad.id}"/>
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-success">Confirmar inscripción</button>
+                    <button type="submit" class="btn btn-success">Confirmar Inscripción</button>
                     <a href="/socio/actividades/listar" class="btn btn-secondary">Cancelar</a>
                 </div>
             </form>
 
         </div>
     </div>
-    <a href="/socio/actividades/listar" class="btn btn-secondary mt-3">← Volver a Actividades</a>
 </div>
 </body>
 </html>

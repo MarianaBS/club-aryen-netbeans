@@ -14,17 +14,20 @@
     <div class="container">
         <a class="navbar-brand" href="/socio/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
         <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
+            <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
+        </form>
     </div>
 </nav>
 <div class="container py-4">
     <div class="page-header">
-        <h1 class="page-title">Mis inscripciones</h1>
+        <h1 class="page-title">Mis Inscripciones</h1>
         <a href="/socio/actividades/listar" class="btn btn-primary btn-sm">+ Inscribirme a más</a>
     </div>
 
     <div th:if="${#lists.isEmpty(inscripciones)}" class="alert alert-info">
-        Todavía no estás inscripto en ninguna actividad.
-        <a th:href="@{/socio/actividades/listar}">Ver actividades →</a>
+        Todavía no estás inscripto en ninguna Actividad.
+        <a th:href="@{/socio/actividades/listar}">Ver Actividades →</a>
     </div>
 
     <div th:unless="${#lists.isEmpty(inscripciones)}" class="card">

@@ -14,6 +14,9 @@
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
         <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
+            <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
+        </form>
     </div>
 </nav>
 <div class="container py-4">
@@ -47,11 +50,11 @@
 
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem" class="mb-3">
                     <div>
-                        <label class="form-label">Horario de inicio</label>
+                        <label class="form-label">Horario de Inicio</label>
                         <input type="time" th:field="*{horario}" class="form-control" id="horarioInicio" required>
                     </div>
                     <div>
-                        <label class="form-label">Horario de fin</label>
+                        <label class="form-label">Horario de Fin</label>
                         <input type="time" th:field="*{horarioFin}" class="form-control" id="horarioFin" required>
                     </div>
                 </div>
@@ -62,7 +65,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Cupo máximo <span class="text-muted">(0 = sin límite)</span></label>
+                    <label class="form-label">Cupo Máximo <span class="text-muted">(0 = sin límite)</span></label>
                     <input type="number" th:field="*{cupoMaximo}" class="form-control"
                            min="0" placeholder="0" style="max-width:140px">
                 </div>
@@ -85,7 +88,7 @@
 
     function validar() {
         if (inicio.value && fin.value && fin.value <= inicio.value) {
-            fin.setCustomValidity('El horario de fin debe ser posterior al de inicio.');
+            fin.setCustomValidity('El Horario de Fin debe ser posterior al Horario de Inicio.');
         } else {
             fin.setCustomValidity('');
         }

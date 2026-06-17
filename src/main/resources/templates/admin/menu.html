@@ -17,7 +17,7 @@
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
         <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
         <form th:action="@{/logout}" method="post" style="margin:0">
-            <button type="submit" class="btn-logout">Cerrar sesión</button>
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
         </form>
     </div>
 </nav>
@@ -34,12 +34,12 @@
                 <path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
             </svg>
     </p>
-    <p class="menu-subtitle">Panel de administración</p>
+    <p class="menu-subtitle">Panel de Administración</p>
 
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-number" th:text="${totalSocios}">0</div>
-            <div class="stat-label">Socios activos</div>
+            <div class="stat-label">Socios Activos</div>
         </div>
         <div class="stat-card">
             <div class="stat-number" th:text="${totalActividades}">0</div>
@@ -68,7 +68,7 @@
                 </svg>
             </span>
             <p class="menu-card-title">Socios</p>
-            <p class="menu-card-sub">Alta, edición y baja</p>
+            <p class="menu-card-sub">Alta, Edición y Baja</p>
         </a>
 
         <a href="/admin/actividades/listar" class="menu-card">
@@ -79,7 +79,7 @@
                 </svg>
             </span>
             <p class="menu-card-title">Actividades</p>
-            <p class="menu-card-sub">Gestión de clases</p>
+            <p class="menu-card-sub">Gestión de Clases</p>
         </a>
 
         <a href="/admin/inscripciones/listar" class="menu-card">
@@ -94,7 +94,7 @@
                 </svg>
             </span>
             <p class="menu-card-title">Inscripciones</p>
-            <p class="menu-card-sub">Socios por actividad</p>
+            <p class="menu-card-sub">Socios por Actividad</p>
         </a>
 
         <a href="/admin/usuarios/listar" class="menu-card">
@@ -106,7 +106,7 @@
                 </svg>
             </span>
             <p class="menu-card-title">Usuarios</p>
-            <p class="menu-card-sub">Accesos y roles</p>
+            <p class="menu-card-sub">Accesos y Roles</p>
         </a>
 
         <a href="/admin/listados" class="menu-card">
@@ -119,7 +119,7 @@
                 </svg>
             </span>
             <p class="menu-card-title">Listados</p>
-            <p class="menu-card-sub">Por socio o actividad</p>
+            <p class="menu-card-sub">Por Socio o Actividad</p>
         </a>
 
     </div>

@@ -14,11 +14,14 @@
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
         <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
+            <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
+        </form>
     </div>
 </nav>
 <div class="container py-4">
     <div class="page-header">
-        <h1 class="page-title">Nueva inscripción</h1>
+        <h1 class="page-title">Nueva Inscripción</h1>
     </div>
 
     <div class="card form-max">
@@ -29,7 +32,7 @@
                 <div class="mb-3">
                     <label class="form-label">Socio</label>
                     <select name="socioId" class="form-select" required>
-                        <option value="">-- Seleccioná un socio --</option>
+                        <option value="">-- Seleccione un socio --</option>
                         <option th:each="s : ${socios}"
                                 th:value="${s.id}"
                                 th:text="${s.apellido + ', ' + s.nombre}">
@@ -39,7 +42,7 @@
                 <div class="mb-3">
                     <label class="form-label">Actividad</label>
                     <select name="actividadId" class="form-select" required>
-                        <option value="">-- Seleccioná una actividad --</option>
+                        <option value="">-- Seleccione una actividad --</option>
                         <option th:each="a : ${actividades}"
                                 th:value="${a.id}"
                                 th:text="${a.nombre + ' · ' + a.dia
@@ -57,6 +60,7 @@
             </form>
         </div>
     </div>
+    <a href="/admin/inscripciones/listar" class="btn btn-secondary mt-3">← Volver al Listado</a>
 </div>
 </body>
 </html>

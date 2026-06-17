@@ -850,9 +850,6 @@ body.dark .btn-outline-success:hover {
         gap: .5rem;
     }
     /* Ocultar el label de sección en pantallas muy chicas */
-    .navbar-section {
-        display: none;
-    }
     /* Navbar ocupa solo lo necesario */
     .navbar {
         padding: .5rem 0;
@@ -872,3 +869,76 @@ body.dark .btn-outline-success:hover {
         font-size: .9rem;
     }
 }
+
+/* ── LISTADOS — ACORDEÓN (por socio / por actividad) ───────── */
+.accordion-item {
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm) !important;
+    margin-bottom: .5rem;
+    overflow: hidden;
+}
+.accordion-button {
+    background: white;
+    color: var(--gray-900);
+    font-weight: 500;
+    font-size: .925rem;
+    padding: .85rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    flex-wrap: wrap;
+}
+.accordion-button:not(.collapsed) {
+    background: var(--primary-light);
+    color: var(--primary);
+    box-shadow: none;
+}
+.accordion-button::after { margin-left: auto; }
+.accordion-body { padding: 0; }
+
+.act-meta {
+    font-size: .8rem;
+    color: var(--gray-500);
+    font-weight: 400;
+}
+.cupo-info {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: .85rem;
+}
+.subtotal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: .6rem 1.1rem;
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-100);
+    font-size: .85rem;
+    color: var(--gray-500);
+}
+.sin-inscripciones {
+    padding: .9rem 1.1rem;
+    color: var(--gray-500);
+    font-size: .875rem;
+    font-style: italic;
+}
+.resumen-bar {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    padding: .75rem 1rem;
+    background: var(--primary-light);
+    border-radius: var(--radius-sm);
+    font-size: .875rem;
+    flex-wrap: wrap;
+}
+.resumen-bar strong,
+.resumen-item strong { color: var(--primary); }
+
+body.dark .accordion-item   { border-color: #334155; background: #1e293b; }
+body.dark .accordion-button { background: #1e293b; color: var(--gray-900); }
+body.dark .accordion-button:not(.collapsed) { background: #1e1b4b; color: var(--primary); }
+body.dark .subtotal-bar     { background: #0f172a; border-color: #334155; }
+body.dark .resumen-bar      { background: #1e1b4b; }
+body.dark .act-meta         { color: #64748b; }

@@ -26,6 +26,8 @@ public class Socio {
     @Column(unique = true)
     private String dni;
 
+    private LocalDate fechaNacimiento;
+
     private LocalDate fechaAlta = LocalDate.now();
 
     private boolean activo = true;
@@ -55,6 +57,9 @@ public class Socio {
 
     public String getDni() { return dni; }
     public void setDni(String dni) { this.dni = dni; }
+
+    public LocalDate getFechaNacimiento() { return fechaNacimiento; }
+    public void setFechaNacimiento(LocalDate f) { this.fechaNacimiento = f; }
 
     public LocalDate getFechaAlta() { return fechaAlta; }
     public void setFechaAlta(LocalDate f) { this.fechaAlta = f; }

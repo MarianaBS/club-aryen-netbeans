@@ -14,11 +14,14 @@
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
         <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
+            <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
+        </form>
     </div>
 </nav>
 <div class="container py-4">
     <div class="page-header">
-        <h1 class="page-title" th:text="${socio.id} != null ? 'Editar socio' : 'Nuevo socio'"></h1>
+        <h1 class="page-title" th:text="${socio.id} != null ? 'Editar Socio' : 'Nuevo Socio'"></h1>
     </div>
 
     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
@@ -41,6 +44,10 @@
                     <input type="text" th:field="*{dni}" class="form-control" placeholder="12345678" required>
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Fecha de Nacimiento <span class="text-muted">(opcional)</span></label>
+                    <input type="date" th:field="*{fechaNacimiento}" class="form-control">
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Email <span class="text-muted">(opcional)</span></label>
                     <input type="email" th:field="*{email}" class="form-control" placeholder="correo@ejemplo.com">
                 </div>
@@ -61,7 +68,7 @@
             </form>
         </div>
     </div>
-    <a href="/admin/socios/listar" class="btn btn-secondary mt-3">← Volver al listado</a>
+    <a href="/admin/socios/listar" class="btn btn-secondary mt-3">← Volver al Listado</a>
 </div>
 </body>
 </html>

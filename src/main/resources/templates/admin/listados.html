@@ -15,14 +15,14 @@
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
         <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
         <form th:action="@{/logout}" method="post" style="margin:0">
-            <button type="submit" class="btn-logout">Cerrar sesión</button>
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
         </form>
     </div>
 </nav>
 
 <div class="menu-wrapper">
     <p class="menu-welcome">Listados</p>
-    <p class="menu-subtitle">Elegí el tipo de reporte que querés ver</p>
+    <p class="menu-subtitle">Seleccione el Tipo de Reporte</p>
 
     <div class="menu-grid" style="max-width:420px; grid-template-columns: repeat(2,1fr)">
         <a href="/admin/listados/por-socio" class="menu-card">
@@ -33,8 +33,8 @@
                     <circle cx="12" cy="7" r="4"/>
                 </svg>
             </span>
-            <p class="menu-card-title">Por socio</p>
-            <p class="menu-card-sub">Actividades de cada socio</p>
+            <p class="menu-card-title">Por Socio</p>
+            <p class="menu-card-sub">Actividades de cada Socio</p>
         </a>
         <a href="/admin/listados/por-actividad" class="menu-card">
             <span class="menu-card-icon">
@@ -43,12 +43,12 @@
                     <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
                 </svg>
             </span>
-            <p class="menu-card-title">Por actividad</p>
-            <p class="menu-card-sub">Inscriptos en cada clase</p>
+            <p class="menu-card-title">Por Actividad</p>
+            <p class="menu-card-sub">Inscriptos en cada Clase</p>
         </a>
     </div>
 
-    <a href="/admin/menu" class="btn btn-secondary mt-4">← Volver al menú</a>
+    <a href="/admin/menu" class="btn btn-secondary mt-4">← Volver</a>
 </div>
 </body>
 </html>

@@ -14,12 +14,15 @@
     <div class="container">
         <a class="navbar-brand" href="/admin/menu"><img src="/img/logo.svg" alt="Club Aryen" style="height:56px"></a>
         <button class="btn-dark-toggle" title="Modo oscuro">🌙</button>
+            <form th:action="@{/logout}" method="post" style="margin:0">
+            <button type="submit" class="btn-logout">Cerrar Sesión</button>
+        </form>
     </div>
 </nav>
 <div class="container py-4">
     <div class="page-header">
         <h1 class="page-title">Socios</h1>
-        <a href="/admin/socios/nuevo" class="btn btn-primary btn-sm">+ Nuevo socio</a>
+        <a href="/admin/socios/nuevo" class="btn btn-primary btn-sm">+ Nuevo Socio</a>
     </div>
 
     <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
