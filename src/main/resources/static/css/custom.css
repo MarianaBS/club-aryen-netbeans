@@ -518,8 +518,13 @@ body.dark {
     --shadow:         0 1px 3px rgba(0,0,0,.4), 0 1px 2px rgba(0,0,0,.3);
     --shadow-md:      0 4px 6px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.3);
 
-    background: var(--gray-50);
-    color: var(--gray-900);
+    background: #0f172a !important;
+    color: #f1f5f9;
+    min-height: 100vh;
+}
+
+html:has(body.dark) {
+    background: #0f172a;
 }
 
 body.dark .navbar          { background: #1e293b; border-color: #334155; }
