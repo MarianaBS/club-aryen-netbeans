@@ -43,6 +43,19 @@ public class ActividadService {
                 );
             }
         }
+
+        // Validar que no exista otra actividad con mismo nombre, día y horario
+        if (nueva.getNombre() != null && nueva.getDia() != null && nueva.getHorario() != null) {
+            repo.findByNombreIgnoreCaseAndDiaAndHorario(nueva.getNombre(), nueva.getDia(), nueva.getHorario())
+                .filter(existente -> !existente.getId().equals(nueva.getId()))
+                .ifPresent(existente -> {
+                    throw new ActividadException(
+                        "Ya existe una actividad \"" + existente.getNombre() + "\" el " + existente.getDia()
+                        + " a las " + existente.getHorario() + ". Cambiá el nombre, día u horario."
+                    );
+                });
+        }
+
         return repo.save(nueva);
     }
 

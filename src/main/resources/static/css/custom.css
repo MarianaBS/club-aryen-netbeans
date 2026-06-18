@@ -969,3 +969,31 @@ body.dark .act-meta         { color: #64748b; }
         font-size: .95rem;
     }
 }
+
+/* ── INPUT PASSWORD CON ÍCONO DE OJO ─────────────────────── */
+.password-wrapper {
+    position: relative;
+}
+.password-wrapper input {
+    padding-right: 2.5rem;
+}
+.toggle-password {
+    position: absolute;
+    right: .75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-500);
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+.toggle-password:hover {
+    color: var(--primary);
+}
+.toggle-password svg {
+    width: 20px;
+    height: 20px;
+}

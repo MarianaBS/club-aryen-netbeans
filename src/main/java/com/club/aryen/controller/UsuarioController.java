@@ -32,9 +32,21 @@ public class UsuarioController {
     }
 
     @PostMapping("/guardar")
-    public String guardarUsuario(@ModelAttribute Usuario usuarioForm, RedirectAttributes ra) {
-        Usuario usuario;
+    public String guardarUsuario(@ModelAttribute Usuario usuarioForm, Model model, RedirectAttributes ra) {
         boolean esNuevo = (usuarioForm.getId() == null);
+
+        // Validación: un usuario con rol SOCIO debe tener un socio vinculado obligatoriamente
+        boolean esRolSocio = "SOCIO".equalsIgnoreCase(usuarioForm.getRol());
+        boolean tieneSocio = usuarioForm.getSocio() != null && usuarioForm.getSocio().getId() != null;
+
+        if (esRolSocio && !tieneSocio) {
+            model.addAttribute("usuario", usuarioForm);
+            model.addAttribute("socios", esNuevo ? socioRepo.findByUsuarioIsNull() : socioRepo.findAll());
+            model.addAttribute("error", "Un usuario con rol Socio debe tener un socio vinculado. Seleccioná uno de la lista.");
+            return "admin/usuarios";
+        }
+
+        Usuario usuario;
 
         if (!esNuevo) {
             usuario = usuRepo.findById(usuarioForm.getId()).orElseThrow();

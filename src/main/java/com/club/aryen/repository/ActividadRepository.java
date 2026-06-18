@@ -10,6 +10,10 @@ public interface ActividadRepository extends JpaRepository<Actividad, Long> {
 
     Optional<Actividad> findByNombre(String nombre);
 
+    // Para validar duplicados: misma actividad, mismo día y mismo horario de inicio
+    Optional<Actividad> findByNombreIgnoreCaseAndDiaAndHorario(
+        String nombre, String dia, java.time.LocalTime horario);
+
     List<Actividad> findByActivo(boolean activo);
 
     // Búsqueda por nombre, ordenada alfabéticamente
