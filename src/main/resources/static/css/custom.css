@@ -947,3 +947,25 @@ body.dark .accordion-button:not(.collapsed) { background: #1e1b4b; color: var(--
 body.dark .subtotal-bar     { background: #0f172a; border-color: #334155; }
 body.dark .resumen-bar      { background: #1e1b4b; }
 body.dark .act-meta         { color: #64748b; }
+
+/* ── TIPOGRAFÍA MÁS GRANDE EN MOBILE ─────────────────────── */
+@media (max-width: 640px) {
+    body {
+        font-size: 17px;
+    }
+    .page-title {
+        font-size: 1.5rem;
+    }
+    .menu-card h3, .menu-card .menu-card-title {
+        font-size: 1.1rem;
+    }
+    .btn {
+        font-size: 1rem;
+    }
+    .btn-sm {
+        font-size: .9rem;
+    }
+    table, .table th, .table td {
+        font-size: .95rem;
+    }
+}
