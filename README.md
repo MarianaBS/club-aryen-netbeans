@@ -25,3 +25,4 @@ Proyecto Spring Boot listo para Apache NetBeans 15.
 ## Acceso
 - http://localhost:8080/login  (user: admin / pass: 1234)
 
+Deploy actualizado.
