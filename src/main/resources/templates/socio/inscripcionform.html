@@ -57,7 +57,7 @@
                 <div th:if="${inscripcion.actividad.cupoMaximo > 0}"
                      style="display:flex; justify-content:space-between; padding:.6rem 0">
                     <span class="text-muted">Lugares disponibles</span>
-                    <span th:with="libres=${inscripcion.actividad.cupoMaximo - inscriptos}"
+                    <span th:with="libres=${inscripcion.actividad.cupoMaximo - (inscriptos != null ? inscriptos : 0)}"
                           th:classappend="${libres <= 2} ? 'cupo-casi-lleno' : 'cupo-disponible'"
                           style="font-weight:500"
                           th:text="${libres + ' de ' + inscripcion.actividad.cupoMaximo}">

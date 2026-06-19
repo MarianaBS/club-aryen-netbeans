@@ -74,6 +74,13 @@ public class InscripcionController {
 
             model.addAttribute("inscripcion", i);
             model.addAttribute("error", ex.getMessage());
+            model.addAttribute("inscriptos", inscRepo.countByActividad(actividad));
+
+            if (isAdmin(auth)) {
+                model.addAttribute("socios", socioRepo.findByActivo(true));
+                model.addAttribute("actividades", actividadRepo.findByActivo(true));
+            }
+
             return isAdmin(auth) ? "admin/inscripciones" : "socio/inscripcionform";
         }
     }

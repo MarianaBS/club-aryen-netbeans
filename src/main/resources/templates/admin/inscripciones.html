@@ -35,6 +35,7 @@
                         <option value="">-- Seleccione un socio --</option>
                         <option th:each="s : ${socios}"
                                 th:value="${s.id}"
+                                th:selected="${inscripcion != null and inscripcion.socio != null and inscripcion.socio.id == s.id}"
                                 th:text="${s.apellido + ', ' + s.nombre}">
                         </option>
                     </select>
@@ -45,6 +46,7 @@
                         <option value="">-- Seleccione una actividad --</option>
                         <option th:each="a : ${actividades}"
                                 th:value="${a.id}"
+                                th:selected="${inscripcion != null and inscripcion.actividad != null and inscripcion.actividad.id == a.id}"
                                 th:text="${a.nombre + ' · ' + a.dia
                                           + ' ' + #temporals.format(a.horario,'HH:mm')
                                           + '-' + #temporals.format(a.horarioFin,'HH:mm')}">
