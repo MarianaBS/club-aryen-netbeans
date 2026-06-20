@@ -2,29 +2,34 @@ package com.club.aryen.service;
 
 import com.club.aryen.model.Inscripcion;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import jakarta.mail.internet.MimeMessage;
+import org.springframework.web.client.RestTemplate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Value("${app.mail.from:noreply@clubaryen.com}")
     private String from;
+
+    @Value("${brevo.api.key:}")
+    private String brevoApiKey;
+
+    private static final String BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 
     // Logo incrustado en base64 para que funcione sin URL pública
     private static final String LOGO_B64 = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAADbUlEQVRYhdWXTWhcVRTHf+fOd/ImaWOgY9IKM9MopCTiB0JAMUpqUxNnaEUKIi6suK2LihuhILrRouBKKaK4k9CgQcSPKl2UShVam7TFtJI0bZqWVMfJfHZm8u51UU1npjOTzCQ1+N+9d847/999vHfPufB/1q7B2b5dg7N9q6khjTwUferKFox5G5EXADHwlUs79x0+smnqjgI81z9vFdyF/QZeB7xl4TzwoeTzB744GoyvKUB/v3FucF99yWDeBDYtkx5DeMfdEn9/ZGRbftUA0R1XBjDyHpie8lhhMQGAy9lSqfJ5o80bY99vHmkIILrzaje2eRfM0+UxbRZJpabJZGcRAa8ngN+/FSWuSgY/as3+sSOdp1YEENl+qQNRBwTZCzjK4zdy8ySS59G69O0qcWFZIZp8nZV8tIgcVg5eG/26Y6YqQGRwbrdo8xnQXF7BtrMsJCfJ52OVDJbkdm2gxX8vTqdVKZw2Sl4c+6ZjdAm8ZBXa9JabGzSp9DTXYyeWNQfIF+L8GfuFRPICxtjl4eZ/PJbkrFUsl/uDROoCtp1d1rgU2pDJXuZGbh6/FcbnDVTNVVUjwF8L43WbF0vrHAuJczVzar6B6hLaH+ki+qAXwZA+M83nx1LoBio1BqBaGN73MC93KwSwLzoZP3GKs4UGSjXi7+wOsfM+BdqmsAiOe4IMP9TgWup/xMED0SBbHFD49Ryf/lTAKB9PRDvwN9Da6gewOhke8KGMzcR3vzP67TUyRmh9LMzjbf8BQNuTYR5tFUz+Oj8czRA/NsPPaZCmAEM7rLoL1pevLAYiAZoETBLCu3vY+/xdeBIGxEFPJEiwToK6vhwVCjJ8vwMBpD3As6+UbjDOrhBDPWf54PTKf8g6ABTbngkRdoKOXeLgqxOc+bcfOTay52AfQ3dbbI8EOHR6jpVuXzUBNrb23tqKlRvX7BSffCTkJi/y5USCWzt9nENvuZnrdUMSWhVkNSjlocXf1TiAx9NOu6eNdHqGVGaGkyMTnKyYabh2/Dc+Pn7zShCafJvxWyFEbuvo1QG0knHRJk1RRxQUVnMQnzdAIjlJbpXtWCsZL75R90Bys0NOYtu5kvtKufFbW6t1vpUNJMWqPZLZpFJTd2Ykuw1kvYbSYq3rWF6sdTuYlGstj2ar0locTtddfwO/FHJ+Zq+QywAAAABJRU5ErkJggg==";
 
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("HH:mm");
 
-    public EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
 
     @Async
     public void enviarConfirmacionInscripcion(Inscripcion inscripcion) {
@@ -77,13 +82,26 @@ public class EmailService {
 
     private void send(String to, String subject, String html) {
         try {
-            MimeMessage msg = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(msg, true, "UTF-8");
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(html, true);
-            mailSender.send(msg);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("api-key", brevoApiKey);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setAccept(java.util.List.of(MediaType.APPLICATION_JSON));
+
+            Map<String, Object> sender = new HashMap<>();
+            sender.put("name", "Club Aryen");
+            sender.put("email", from);
+
+            Map<String, Object> recipient = new HashMap<>();
+            recipient.put("email", to);
+
+            Map<String, Object> body = new HashMap<>();
+            body.put("sender", sender);
+            body.put("to", java.util.List.of(recipient));
+            body.put("subject", subject);
+            body.put("htmlContent", html);
+
+            HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+            restTemplate.postForEntity(BREVO_API_URL, request, String.class);
         } catch (Exception e) {
             // Log sin frenar la operación
             System.err.println("Error enviando mail: " + e.getMessage());
