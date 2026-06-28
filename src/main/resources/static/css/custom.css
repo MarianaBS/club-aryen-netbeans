@@ -997,3 +997,73 @@ body.dark .act-meta         { color: #64748b; }
     width: 20px;
     height: 20px;
 }
+
+/* ── ESTILOS DE IMPRESIÓN ─────────────────────────────────── */
+.print-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.print-bar label {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .95rem;
+    cursor: pointer;
+    user-select: none;
+}
+.btn-print {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .35rem .9rem;
+    border-radius: 6px;
+    border: 1px solid var(--gray-300);
+    background: transparent;
+    color: var(--gray-700);
+    font-size: .85rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: border-color .2s, color .2s;
+}
+.btn-print:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+@media print {
+    /* Ocultar todo lo que no es contenido */
+    .navbar, .search-bar, .page-header a,
+    .btn-print, .print-bar, .td-actions,
+    .btn, form[action*="logout"], .accordion-button::after,
+    a[href*="nuevo"], a[href*="editar"], a[href*="baja"],
+    a[href*="reactivar"], a[href*="volver"], a[href*="Volver"],
+    .btn-secondary, .btn-danger, .btn-primary,
+    .btn-logout, .btn-dark-toggle { display: none !important; }
+
+    /* Mostrar acordeones desplegados */
+    .accordion-collapse { display: block !important; }
+    .accordion-button { pointer-events: none; }
+    .accordion-button.collapsed { color: inherit !important; }
+
+    /* Tipografía y colores de impresión */
+    body { font-size: 11pt; color: #000 !important; background: #fff !important; }
+    .page-title { font-size: 16pt; margin-bottom: .5rem; }
+    .resumen-bar, .subtotal-bar { background: #f5f5f5 !important; border: 1px solid #ddd; }
+    .badge-success { background: #d4edda !important; color: #155724 !important; }
+    .badge-danger  { background: #f8d7da !important; color: #721c24 !important; }
+    .badge-primary { background: #cce5ff !important; color: #004085 !important; }
+    .badge-gray    { background: #e2e3e5 !important; color: #383d41 !important; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc !important; padding: 4pt 6pt !important; }
+    thead { background: #e8eaf6 !important; }
+
+    /* Inactivos ocultos por defecto, visibles si se marcó el checkbox */
+    .fila-inactivo { display: none; }
+    body.print-con-inactivos .fila-inactivo { display: table-row !important; }
+    .seccion-inactivos { display: none; }
+    body.print-con-inactivos .seccion-inactivos { display: block !important; }
+    .accordion-item.inactivo { display: none; }
+    body.print-con-inactivos .accordion-item.inactivo { display: block !important; }
+}

@@ -25,6 +25,22 @@
         <a href="/admin/listados/por-socio" class="btn btn-secondary btn-sm">Ver por Socio →</a>
     </div>
 
+    <!-- Barra de impresión -->
+    <div class="print-bar">
+        <label>
+            <input type="checkbox" id="chkInactivos" onchange="toggleInactivos()">
+            Incluir actividades inactivas
+        </label>
+        <button class="btn-print" onclick="window.print()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Imprimir
+        </button>
+    </div>
+
     <!-- Resumen general -->
     <div class="resumen-bar">
         <span>Total Actividades: <strong th:text="${totalActividades}"></strong></span>
@@ -32,7 +48,8 @@
     </div>
 
     <div class="accordion" id="acordeonActividades">
-        <div th:each="entrada, iterStat : ${mapa}" class="accordion-item">
+        <div th:each="entrada, iterStat : ${mapa}" class="accordion-item"
+             th:classappend="${!entrada.key.activo} ? ' inactivo' : ''">
 
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed"
@@ -118,5 +135,11 @@
     <a href="/admin/listados" class="btn btn-secondary mt-3">← Volver a Listados</a>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleInactivos() {
+    document.body.classList.toggle('print-con-inactivos',
+        document.getElementById('chkInactivos').checked);
+}
+</script>
 </body>
 </html>

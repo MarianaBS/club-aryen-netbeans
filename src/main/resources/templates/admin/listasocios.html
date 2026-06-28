@@ -27,6 +27,22 @@
 
     <div th:if="${exito}" class="alert alert-success" th:text="${exito}"></div>
 
+    <!-- Barra de impresión -->
+    <div class="print-bar">
+        <label>
+            <input type="checkbox" id="chkInactivos" onchange="toggleInactivos()">
+            Incluir inactivos
+        </label>
+        <button class="btn-print" onclick="window.print()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Imprimir
+        </button>
+    </div>
+
     <form th:action="@{/admin/socios/listar}" method="get" class="search-bar">
         <input type="text" name="q" th:value="${q}" placeholder="Buscar por nombre o apellido...">
         <button type="submit">Buscar</button>
@@ -55,7 +71,8 @@
                         </span>
                     </td>
                 </tr>
-                <tr th:each="s : ${socios}">
+                <tr th:each="s : ${socios}"
+                    th:classappend="${!s.activo} ? 'fila-inactivo' : ''">
                     <td data-label="Nombre" style="font-weight:500" th:text="${s.apellido + ', ' + s.nombre}"></td>
                     <td data-label="Email" th:text="${s.email}"></td>
                     <td data-label="Teléfono" th:text="${s.telefono}" style="white-space:nowrap"></td>
@@ -71,10 +88,12 @@
                             <a th:href="@{/admin/socios/editar/{id}(id=${s.id})}" class="btn btn-secondary btn-sm">Editar</a>
                             <a th:href="@{/admin/socios/confirmar-baja/{id}(id=${s.id})}" class="btn btn-danger btn-sm">Baja</a>
                         </th:block>
-                        <!-- Inactivo: solo Reactivar -->
-                        <a th:unless="${s.activo}"
-                           th:href="@{/admin/socios/reactivar/{id}(id=${s.id})}"
-                           class="btn btn-outline-success btn-sm">Reactivar</a>
+                        <!-- Inactivo: Editar deshabilitado + Reactivar -->
+                        <th:block th:unless="${s.activo}">
+                            <button class="btn btn-secondary btn-sm" disabled>Editar</button>
+                            <a th:href="@{/admin/socios/reactivar/{id}(id=${s.id})}"
+                               class="btn btn-outline-success btn-sm">Reactivar</a>
+                        </th:block>
                     </td>
                 </tr>
             </tbody>
@@ -83,5 +102,11 @@
     <a href="/admin/menu" class="btn btn-secondary mt-3">← Volver</a>
 </div>
 <script src="/js/confirm-modal.js"></script>
+<script>
+function toggleInactivos() {
+    document.body.classList.toggle('print-con-inactivos',
+        document.getElementById('chkInactivos').checked);
+}
+</script>
 </body>
 </html>
